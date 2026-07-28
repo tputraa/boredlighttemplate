@@ -5,8 +5,8 @@
 
 @section('content')
 <div class="min-h-[calc(100vh-8rem)] flex items-center justify-center">
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 p-6 lg:p-8">
-        <h2 class="text-2xl font-bold text-center mb-6 text-slate-800">Welcome Back</h2>
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-sm p-6 lg:p-8">
+        <h2 class="text-2xl font-bold text-center mb-6 text-[#1c1a1e]">Welcome Back</h2>
 
         @if ($errors->any())
             <div class="mb-4 p-4 rounded-lg bg-[#e53e3e]/10 text-[#e53e3e] border border-[#e53e3e]/20 text-sm">
@@ -22,20 +22,20 @@
             @csrf
 
             <div>
-                <label for="email" class="block text-sm font-medium text-slate-700">Email</label>
+                <label for="email" class="block text-sm font-medium text-[#59565e]">Email</label>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                    class="mt-1 block w-full rounded-lg border border-slate-200 px-3 py-2 focus:border-[#800c3c] focus:ring focus:ring-[#800c3c]/20 outline-none">
+                    class="mt-1 block w-full rounded-lg border border-slate-200 px-3 py-2 focus:border-[#800c3c] focus:ring-1 focus:ring-[#800c3c] outline-none">
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
+                <label for="password" class="block text-sm font-medium text-[#59565e]">Password</label>
                 <input id="password" type="password" name="password" required
-                    class="mt-1 block w-full rounded-lg border border-slate-200 px-3 py-2 focus:border-[#800c3c] focus:ring focus:ring-[#800c3c]/20 outline-none">
+                    class="mt-1 block w-full rounded-lg border border-slate-200 px-3 py-2 focus:border-[#800c3c] focus:ring-1 focus:ring-[#800c3c] outline-none">
             </div>
 
             <div class="flex items-center">
                 <input id="remember" type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-[#800c3c] focus:ring-[#800c3c]">
-                <label for="remember" class="ml-2 text-sm text-slate-600">Remember me</label>
+                <label for="remember" class="ml-2 text-sm text-[#59565e]">Remember me</label>
             </div>
 
             <button type="submit"
@@ -44,7 +44,7 @@
             </button>
         </form>
 
-        <p class="mt-4 text-center text-sm text-slate-500">
+        <p class="mt-4 text-center text-sm text-[#59565e]">
             Demo accounts: admin@example.com, manager@example.com, operator@example.com<br>
             Password: <strong>password</strong>
         </p>

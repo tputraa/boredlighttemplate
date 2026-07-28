@@ -4,9 +4,9 @@
 @section('page-title', 'Menu Management')
 
 @section('content')
-<div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
-    <div class="p-4 lg:p-6 border-b border-slate-200 flex items-center justify-between">
-        <h2 class="text-lg font-semibold text-slate-800">Menus</h2>
+<div class="bg-white rounded-2xl shadow-sm">
+    <div class="p-4 lg:p-6 border-b border-slate-100/80 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-[#1c1a1e]">Menus</h2>
         @if ($userAccess['fadd'])
             <a href="{{ route('menus.create') }}" class="px-4 py-2 rounded-xl bg-[#800c3c] hover:bg-[#60072b] text-white text-sm font-medium transition-colors">+ New Menu</a>
         @endif
@@ -14,7 +14,7 @@
 
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
-            <thead class="sticky top-0 bg-[#f8fafc] text-slate-600 font-semibold border-b border-slate-200">
+            <thead class="text-[#59565e] font-semibold border-b border-slate-100/80">
                 <tr>
                     <th class="px-4 lg:px-6 py-3 font-medium">Code</th>
                     <th class="px-4 lg:px-6 py-3 font-medium">Name</th>
@@ -25,15 +25,15 @@
                     <th class="px-4 lg:px-6 py-3 font-medium text-right">Actions</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200">
+            <tbody>
                 @foreach ($menus as $menu)
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="px-4 lg:px-6 py-3 text-slate-600">{{ $menu->menucode }}</td>
-                        <td class="px-4 lg:px-6 py-3 font-medium text-slate-800">{{ $menu->menuname }}</td>
-                        <td class="px-4 lg:px-6 py-3 text-slate-600">{{ $menu->menuparent ?: '-' }}</td>
-                        <td class="px-4 lg:px-6 py-3 capitalize text-slate-600">{{ $menu->menutype }}</td>
-                        <td class="px-4 lg:px-6 py-3 text-slate-500">{{ $menu->menulink ?: '-' }}</td>
-                        <td class="px-4 lg:px-6 py-3 text-slate-600">{{ $menu->idx }}</td>
+                    <tr class="border-b border-slate-100/80 hover:bg-[#f4f3f6]/50 transition-colors">
+                        <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $menu->menucode }}</td>
+                        <td class="px-4 lg:px-6 py-3 font-medium text-[#1c1a1e]">{{ $menu->menuname }}</td>
+                        <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $menu->menuparent ?: '-' }}</td>
+                        <td class="px-4 lg:px-6 py-3 capitalize text-[#59565e]">{{ $menu->menutype }}</td>
+                        <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $menu->menulink ?: '-' }}</td>
+                        <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $menu->idx }}</td>
                         <td class="px-4 lg:px-6 py-3 text-right">
                             <div class="flex items-center justify-end gap-1">
                                 @if ($userAccess['fedit'])

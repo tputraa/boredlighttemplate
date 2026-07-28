@@ -9,22 +9,23 @@
 
     <style>
         :root {
-            --sidebar-bg: #e2e8f0;
-            --sidebar-text: #475569;
-            --sidebar-active: #cbd5e1;
-            --sidebar-active-bg: #cbd5e1;
-            --sidebar-hover-bg: #cbd5e1;
-            --main-bg: #f1f5f9;
+            --sidebar-bg: #e9e7ec;
+            --sidebar-text: #59565e;
+            --sidebar-active: #dcd9e0;
+            --sidebar-active-text: #1c1a1e;
+            --sidebar-hover-bg: #dcd9e0;
+            --main-bg: #f4f3f6;
             --card-bg: #ffffff;
-            --border: #e2e8f0;
+            --border: #dedbe2;
             --primary: #800c3c;
             --primary-dark: #60072b;
         }
+        [x-cloak] { display: none !important; }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-[#f1f5f9] text-slate-800 antialiased">
+<body class="bg-[#f4f3f6] text-[#1c1a1e] antialiased">
     <div
         x-data="sidebar()"
         x-init="init()"
@@ -33,10 +34,10 @@
         <!-- Sidebar -->
         <aside
             :class="sidebarOpen ? 'w-64' : 'w-16'"
-            class="bg-[#e2e8f0]/70 backdrop-blur-md text-[#475569] flex flex-col transition-all duration-300 fixed inset-y-0 left-0 z-40 lg:relative h-screen border-r border-slate-300"
+            class="bg-[#e9e7ec] text-[#59565e] flex flex-col transition-all duration-300 fixed inset-y-0 left-0 z-40 lg:relative h-screen border-r border-[#dedbe2]"
         >
             <!-- Logo -->
-            <div class="h-16 flex items-center px-4 border-b border-slate-300">
+            <div class="h-16 flex items-center px-4 border-b border-[#dedbe2]">
                 <div class="w-8 h-8 rounded-lg bg-[#800c3c] flex items-center justify-center shrink-0">
                     <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
@@ -45,23 +46,32 @@
                 <span
                     x-show="sidebarOpen"
                     x-transition
-                    class="ml-3 font-semibold text-lg whitespace-nowrap text-slate-900"
+                    class="ml-3 font-semibold text-lg whitespace-nowrap text-[#1c1a1e]"
                 >CorpApp</span>
             </div>
 
             <!-- Navigation -->
-            <nav class="flex-1 overflow-y-auto py-4 px-2 space-y-1">
+            <nav class="flex-1 overflow-y-auto py-4 px-2 space-y-1 [&>*]:relative">
+                @php
+                    $activeParentCode = $activeParentMenuCode ?? null;
+                @endphp
                 @foreach ($menus as $menu)
                     @if (!empty($menu['children']) || $menu['menutype'] === 'link')
                         <div>
                             @if ($menu['menutype'] === 'parent' && !empty($menu['children']))
+                                @php
+                                    $hasActiveChild = $activeParentCode === $menu['menucode'];
+                                @endphp
                                 <button
                                     @click="toggleMenu({{ $menu['menucode'] }})"
-                                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#cbd5e1] hover:text-slate-900 transition-colors group"
+                                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#dcd9e0] hover:text-[#1c1a1e] transition-colors group"
+                                    :class="sidebarOpen 
+                                        ? (openMenus.includes({{ $menu['menucode'] }}) ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : '') 
+                                        : ({{ $hasActiveChild ? 'true' : 'false' }} ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : '')"
                                     :title="!sidebarOpen ? '{{ $menu['menuname'] }}' : ''"
                                 >
                                     <div class="flex items-center min-w-0">
-                                        <span class="shrink-0 text-[#475569] group-hover:text-slate-900">
+                                        <span class="shrink-0 text-[#59565e] group-hover:text-[#1c1a1e]">
                                             {!! $menu['icon'] !!}
                                         </span>
                                         <span
@@ -73,7 +83,7 @@
                                     <span x-show="sidebarOpen" x-transition>
                                         <svg
                                             :class="openMenus.includes({{ $menu['menucode'] }}) ? 'rotate-180' : ''"
-                                            class="w-4 h-4 text-[#475569] transition-transform"
+                                            class="w-4 h-4 text-[#59565e] transition-transform"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
                                         >
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
@@ -82,16 +92,24 @@
                                 </button>
 
                                 <div
-                                    x-show="sidebarOpen && openMenus.includes({{ $menu['menucode'] }})"
+                                    x-show="openMenus.includes({{ $menu['menucode'] }})"
+                                    :class="sidebarOpen ? 'relative mt-1 space-y-1 pl-4 border-l border-[#dedbe2] ml-4' : 'fixed z-50 left-16 mt-0 ml-0 py-2 bg-white rounded-lg shadow-xl border border-[#dedbe2] min-w-[200px]'"
                                     x-transition:enter="transition ease-out duration-200"
                                     x-transition:enter-start="opacity-0 -translate-y-1"
                                     x-transition:enter-end="opacity-100 translate-y-0"
-                                    class="mt-1 space-y-1 pl-4 border-l border-slate-300 ml-4"
+                                    @click.outside="sidebarOpen ? true : openMenus = openMenus.filter(c => c !== {{ $menu['menucode'] }})"
+                                    x-cloak
                                 >
                                     @foreach ($menu['children'] as $child)
+                                        @php
+                                            $isActive = request()->is(trim($child['menulink'], '/').'*');
+                                        @endphp
                                         <a
                                             href="{{ $child['menulink'] }}"
-                                            class="flex items-center px-3 py-2 rounded-lg text-sm {{ request()->is(trim($child['menulink'], '/').'*') ? 'bg-[#cbd5e1] text-slate-900 font-semibold border-l-4 border-l-[#3b021a]' : 'text-[#475569] hover:text-slate-900 hover:bg-[#cbd5e1]' }}"
+                                            :class="sidebarOpen 
+                                                ? 'flex items-center px-3 py-2 rounded-lg text-sm {{ $isActive ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : 'text-[#59565e] hover:text-[#1c1a1e] hover:bg-[#dcd9e0]' }}' 
+                                                : 'flex items-center px-4 py-2.5 text-sm whitespace-nowrap {{ $isActive ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : 'text-[#59565e] hover:bg-[#dcd9e0] hover:text-[#1c1a1e]' }}'"
+                                            @click="sidebarOpen ? true : openMenus = openMenus.filter(c => c !== {{ $menu['menucode'] }})"
                                         >
                                             <span class="shrink-0">{!! $child['icon'] !!}</span>
                                             <span class="ml-3 truncate">{{ $child['menuname'] }}</span>
@@ -101,10 +119,10 @@
                             @else
                                 <a
                                     href="{{ $menu['menulink'] }}"
-                                    class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->is(trim($menu['menulink'], '/')) ? 'bg-[#cbd5e1] text-slate-900 font-semibold' : 'text-[#475569] hover:text-slate-900 hover:bg-[#cbd5e1]' }}"
+                                    class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->is(trim($menu['menulink'], '/')) ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : 'text-[#59565e] hover:text-[#1c1a1e] hover:bg-[#dcd9e0]' }}"
                                     :title="!sidebarOpen ? '{{ $menu['menuname'] }}' : ''"
                                 >
-                                    <span class="shrink-0 text-[#475569] group-hover:text-slate-900">
+                                    <span class="shrink-0 text-[#59565e] group-hover:text-[#1c1a1e]">
                                         {!! $menu['icon'] !!}
                                     </span>
                                     <span
@@ -120,7 +138,7 @@
             </nav>
 
             @auth
-            <div class="mt-auto border-t border-slate-300 p-3">
+            <div class="mt-auto border-t border-[#dedbe2] p-3">
                 <div
                     class="flex items-center"
                     :class="sidebarOpen ? 'justify-between' : 'justify-center'"
@@ -130,13 +148,13 @@
                             <span class="text-xs font-bold">{{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}</span>
                         </div>
                         <div x-show="sidebarOpen" x-transition class="ml-3 min-w-0">
-                            <p class="text-sm font-medium truncate text-slate-900 group-hover:text-[#800c3c]">{{ Auth::user()->name ?? 'User' }}</p>
-                            <p class="text-xs text-[#475569] truncate">{{ Auth::user()->email ?? '' }}</p>
+                            <p class="text-sm font-medium truncate text-[#1c1a1e] group-hover:text-[#800c3c]">{{ Auth::user()->name ?? 'User' }}</p>
+                            <p class="text-xs text-[#59565e] truncate">{{ Auth::user()->email ?? '' }}</p>
                         </div>
                     </a>
                     <form x-show="sidebarOpen" x-transition method="POST" action="{{ route('logout') }}" class="shrink-0 ml-2" x-cloak>
                         @csrf
-                        <button type="submit" class="p-1.5 rounded-lg hover:bg-[#cbd5e1] text-[#475569] hover:text-slate-900" title="Logout">
+                        <button type="submit" class="p-1.5 rounded-lg hover:bg-[#dcd9e0] text-[#59565e] hover:text-[#1c1a1e]" title="Logout">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                             </svg>
@@ -158,17 +176,17 @@
         <!-- Main content -->
         <div class="flex-1 flex flex-col min-w-0">
             <!-- Header -->
-            <header class="h-16 bg-white border-b border-slate-200 flex items-center px-4 lg:px-6 sticky top-0 z-20 shadow-sm">
+            <header class="h-16 bg-white border-b border-[#dedbe2] flex items-center px-4 lg:px-6 sticky top-0 z-20 shadow-sm">
                 <button
                     @click="sidebarOpen = !sidebarOpen"
-                    class="p-2 rounded-lg hover:bg-slate-100 text-slate-600"
+                    class="p-2 rounded-lg hover:bg-[#dcd9e0] text-[#59565e]"
                     aria-label="Toggle sidebar"
                 >
                     <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
                     </svg>
                 </button>
-                <h1 class="ml-4 text-lg font-semibold text-slate-800 truncate">@yield('page-title', 'Dashboard')</h1>
+                <h1 class="ml-4 text-lg font-semibold text-[#1c1a1e] truncate">@yield('page-title', 'Dashboard')</h1>
             </header>
 
             <!-- Page content -->
@@ -195,9 +213,12 @@
 
                     this.$watch('sidebarOpen', value => localStorage.setItem('sidebarOpen', value));
 
-                    const activeParent = @json($activeParentMenuCode ?? null);
-                    if (activeParent) {
-                        this.openMenus = [activeParent];
+                    // Only auto-open active parent menu when sidebar is expanded
+                    if (this.sidebarOpen) {
+                        const activeParent = @json($activeParentMenuCode ?? null);
+                        if (activeParent) {
+                            this.openMenus = [activeParent];
+                        }
                     }
                 },
                 toggleMenu(code) {

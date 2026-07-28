@@ -4,9 +4,9 @@
 @section('page-title', 'Users')
 
 @section('content')
-<div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
-    <div class="p-4 lg:p-6 border-b border-slate-200 flex items-center justify-between">
-        <h2 class="text-lg font-semibold text-slate-800">Users</h2>
+<div class="bg-white rounded-2xl shadow-sm">
+    <div class="p-4 lg:p-6 border-b border-slate-100/80 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-[#1c1a1e]">Users</h2>
         @if ($userAccess['fadd'])
             <a href="{{ route('users.create') }}" class="px-4 py-2 rounded-xl bg-[#800c3c] hover:bg-[#60072b] text-white text-sm font-medium transition-colors">+ New User</a>
         @endif
@@ -14,7 +14,7 @@
 
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
-            <thead class="sticky top-0 bg-[#f8fafc] text-slate-600 font-semibold border-b border-slate-200">
+            <thead class="text-[#59565e] font-semibold border-b border-slate-100/80">
                 <tr>
                     <th class="px-4 lg:px-6 py-3 font-medium">Name</th>
                     <th class="px-4 lg:px-6 py-3 font-medium">Email</th>
@@ -22,12 +22,12 @@
                     <th class="px-4 lg:px-6 py-3 font-medium text-right">Actions</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200">
+            <tbody>
                 @foreach ($users as $user)
-                    <tr class="hover:bg-slate-50/80 transition-colors">
-                        <td class="px-4 lg:px-6 py-3 font-medium text-slate-800">{{ $user->name }}</td>
-                        <td class="px-4 lg:px-6 py-3 text-slate-600">{{ $user->email }}</td>
-                        <td class="px-4 lg:px-6 py-3 text-slate-600">{{ $user->userGroup?->rolename ?? '-' }}</td>
+                    <tr class="border-b border-slate-100/80 hover:bg-[#f4f3f6]/50 transition-colors">
+                        <td class="px-4 lg:px-6 py-3 font-medium text-[#1c1a1e]">{{ $user->name }}</td>
+                        <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $user->email }}</td>
+                        <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $user->userGroup?->rolename ?? '-' }}</td>
                         <td class="px-4 lg:px-6 py-3 text-right">
                             <div class="flex items-center justify-end gap-1">
                                 @if ($userAccess['fedit'])
