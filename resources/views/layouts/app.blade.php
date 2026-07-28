@@ -91,7 +91,7 @@
                                     @foreach ($menu['children'] as $child)
                                         <a
                                             href="{{ $child['menulink'] }}"
-                                            class="flex items-center px-3 py-2 rounded-lg text-sm {{ request()->is(trim($child['menulink'], '/').'*') ? 'bg-[#cbd5e1] text-slate-900 font-semibold' : 'text-[#475569] hover:text-slate-900 hover:bg-[#cbd5e1]' }}"
+                                            class="flex items-center px-3 py-2 rounded-lg text-sm {{ request()->is(trim($child['menulink'], '/').'*') ? 'bg-[#cbd5e1] text-slate-900 font-semibold border-l-4 border-l-[#3b021a]' : 'text-[#475569] hover:text-slate-900 hover:bg-[#cbd5e1]' }}"
                                         >
                                             <span class="shrink-0">{!! $child['icon'] !!}</span>
                                             <span class="ml-3 truncate">{{ $child['menuname'] }}</span>
