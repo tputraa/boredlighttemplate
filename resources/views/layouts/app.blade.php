@@ -21,6 +21,8 @@
             --primary-dark: #60072b;
         }
         [x-cloak] { display: none !important; }
+        .sidebar-border { border-left: 2px solid transparent; }
+        .sidebar-border-active { border-left-color: #3b021a; }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -64,10 +66,10 @@
                                 @endphp
                                 <button
                                     @click="toggleMenu({{ $menu['menucode'] }})"
-                                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#dcd9e0] hover:text-[#1c1a1e] transition-colors group"
+                                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#dcd9e0] hover:text-[#1c1a1e] transition-colors group sidebar-border"
                                     :class="sidebarOpen 
-                                        ? (openMenus.includes({{ $menu['menucode'] }}) ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : '') 
-                                        : ({{ $hasActiveChild ? 'true' : 'false' }} ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : '')"
+                                        ? (openMenus.includes({{ $menu['menucode'] }}) ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold sidebar-border-active' : '') 
+                                        : ({{ $hasActiveChild ? 'true' : 'false' }} ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold sidebar-border-active' : '')"
                                     :title="!sidebarOpen ? '{{ $menu['menuname'] }}' : ''"
                                 >
                                     <div class="flex items-center min-w-0">
@@ -107,8 +109,8 @@
                                         <a
                                             href="{{ $child['menulink'] }}"
                                             :class="sidebarOpen 
-                                                ? 'flex items-center px-3 py-2 rounded-lg text-sm {{ $isActive ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : 'text-[#59565e] hover:text-[#1c1a1e] hover:bg-[#dcd9e0]' }}' 
-                                                : 'flex items-center px-4 py-2.5 text-sm whitespace-nowrap {{ $isActive ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : 'text-[#59565e] hover:bg-[#dcd9e0] hover:text-[#1c1a1e]' }}'"
+                                                ? 'flex items-center px-3 py-2 rounded-lg text-sm sidebar-border {{ $isActive ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold sidebar-border-active' : 'text-[#59565e] hover:text-[#1c1a1e] hover:bg-[#dcd9e0]' }}' 
+                                                : 'flex items-center px-4 py-2.5 text-sm whitespace-nowrap sidebar-border {{ $isActive ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold sidebar-border-active' : 'text-[#59565e] hover:bg-[#dcd9e0] hover:text-[#1c1a1e]' }}'"
                                             @click="sidebarOpen ? true : openMenus = openMenus.filter(c => c !== {{ $menu['menucode'] }})"
                                         >
                                             <span class="shrink-0">{!! $child['icon'] !!}</span>
@@ -119,7 +121,7 @@
                             @else
                                 <a
                                     href="{{ $menu['menulink'] }}"
-                                    class="flex items-center px-3 py-2.5 rounded-lg transition-colors group {{ request()->is(trim($menu['menulink'], '/')) ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold' : 'text-[#59565e] hover:text-[#1c1a1e] hover:bg-[#dcd9e0]' }}"
+                                    class="flex items-center px-3 py-2.5 rounded-lg transition-colors group sidebar-border {{ request()->is(trim($menu['menulink'], '/')) ? 'bg-[#dcd9e0] text-[#1c1a1e] font-semibold sidebar-border-active' : 'text-[#59565e] hover:text-[#1c1a1e] hover:bg-[#dcd9e0]' }}"
                                     :title="!sidebarOpen ? '{{ $menu['menuname'] }}' : ''"
                                 >
                                     <span class="shrink-0 text-[#59565e] group-hover:text-[#1c1a1e]">
