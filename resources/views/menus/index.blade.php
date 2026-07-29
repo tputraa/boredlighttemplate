@@ -4,13 +4,21 @@
 @section('page-title', 'Menu Management')
 
 @section('content')
-<div class="bg-white rounded-2xl shadow-sm">
+<div class="bg-white rounded-2xl shadow-sm" x-data="{ search: '' }">
     <div class="p-4 lg:p-6 border-b border-slate-100/80 flex items-center justify-between">
         <h2 class="text-lg font-semibold text-[#1c1a1e]">Menus</h2>
         @if ($userAccess['fadd'])
             <a href="{{ route('menus.create') }}" class="px-4 py-2 rounded-xl bg-[#800c3c] hover:bg-[#60072b] text-white text-sm font-medium transition-colors">+ New Menu</a>
         @endif
     </div>
+    <form class="p-3 border-b border-slate-100/80">
+        <input
+            type="text"
+            x-model="search"
+            placeholder="Search menus..."
+            class="px-3 py-2 max-w-sm rounded-lg border border-slate-200 text-sm focus:border-[#800c3c] focus:ring-1 focus:ring-[#800c3c] outline-none"
+        >
+    </form>
 
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left">
@@ -27,7 +35,11 @@
             </thead>
             <tbody>
                 @foreach ($menus as $menu)
-                    <tr class="border-b border-slate-100/80 hover:bg-[#f4f3f6]/50 transition-colors">
+                    <tr 
+                        x-show="search === '' || `{{ $menu->menucode }} {{ $menu->menuname }} {{ $menu->menuparent ?: '-' }} {{ $menu->menutype }} {{ $menu->menulink ?: '-' }} {{ $menu->idx }}`.toLowerCase().includes(search.toLowerCase())"
+                        x-cloak
+                        class="border-b border-slate-100/80 hover:bg-[#f4f3f6]/50 transition-colors"
+                    >
                         <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $menu->menucode }}</td>
                         <td class="px-4 lg:px-6 py-3 font-medium text-[#1c1a1e]">{{ $menu->menuname }}</td>
                         <td class="px-4 lg:px-6 py-3 text-[#59565e]">{{ $menu->menuparent ?: '-' }}</td>
